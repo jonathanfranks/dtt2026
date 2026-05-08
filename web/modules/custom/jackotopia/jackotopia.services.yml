@@ -1,0 +1,4 @@
+services:
+  jackotopia.weather:
+    class: Drupal\jackotopia\Weather\WeatherService
+    arguments: ['@http_client']
