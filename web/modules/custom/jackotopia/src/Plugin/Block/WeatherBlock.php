@@ -31,6 +31,9 @@ final class WeatherBlock extends BlockBase implements ContainerFactoryPluginInte
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new self(
       $configuration,
@@ -40,12 +43,18 @@ final class WeatherBlock extends BlockBase implements ContainerFactoryPluginInte
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function defaultConfiguration(): array {
     return [
       'zip_code' => '60614',
     ] + parent::defaultConfiguration();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state): array {
     $form['zip_code'] = [
       '#type' => 'textfield',
@@ -56,10 +65,16 @@ final class WeatherBlock extends BlockBase implements ContainerFactoryPluginInte
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->configuration['zip_code'] = $form_state->getValue('zip_code');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function build(): array {
     $zip = $this->configuration['zip_code'];
     $conditions = $this->weather->getCurrentConditionsForZip($zip);

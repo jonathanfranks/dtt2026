@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\jackotopia\Traits;
 
+use Drupal\Core\Config\ImmutableConfig;
+
 /**
  * Wraps some config into assertions into a trait for testing.
  */
@@ -21,7 +23,7 @@ trait ConfigTrait {
   /**
    * Read a config object.
    */
-  protected function getConfig(string $name): \Drupal\Core\Config\ImmutableConfig {
+  protected function getConfig(string $name): ImmutableConfig {
     return \Drupal::configFactory()->get($name);
   }
 

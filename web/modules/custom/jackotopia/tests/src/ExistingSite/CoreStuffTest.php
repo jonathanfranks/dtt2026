@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
+/**
+ * Foundational DTT tests — login, and the auto-error guardrail demo.
+ */
 class CoreStuffTest extends JackotopiaTestBase {
 
   /**
@@ -35,7 +38,10 @@ class CoreStuffTest extends JackotopiaTestBase {
    * Tests the errors page.
    *
    * We expect this test to fail as it sits because there is a Drupal error
-   * message displayed on this page.
+   * message displayed on this page. CI excludes this group so the badge stays
+   * green; locally it fires every time, which is the demo.
+   *
+   * @group intentionally_failing
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */

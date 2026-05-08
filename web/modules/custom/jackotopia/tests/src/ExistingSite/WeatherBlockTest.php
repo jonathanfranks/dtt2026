@@ -35,7 +35,7 @@ class WeatherBlockTest extends JackotopiaTestBase {
   /**
    * Block plugin crawler against a different zip — proves config drives output.
    */
-  public function testBlockRendersForADifferentZip() {
+  public function testBlockRendersForDifferentZip() {
     $crawler = $this->getBlockPluginCrawler('jackotopia_weather', ['zip_code' => '44718']);
 
     $this->assertSame('44718', $crawler->filter('.jackotopia-weather')->attr('data-zip'));

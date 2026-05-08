@@ -41,7 +41,7 @@ class WeatherServiceTest extends JackotopiaTestBase {
 
     // We don't assert today's actual temperature — it's always different.
     // We DO assert it's a number in a range that says "this is really Chicago
-    // weather and not, say, an HTML error page parsed as -250."
+    // weather and not, say, an HTML error page parsed as -250.".
     $this->assertIsFloat($conditions['temperature_f']);
     $this->assertGreaterThan(-40.0, $conditions['temperature_f']);
     $this->assertLessThan(130.0, $conditions['temperature_f']);

@@ -6,6 +6,13 @@ use Drupal\Tests\jackotopia\Traits\ConfigTrait;
 use Drupal\Tests\jackotopia\Traits\DebugTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
+/**
+ * Base test class for jackotopia ExistingSite tests.
+ *
+ * Adds two pieces of free plumbing every subclass gets: an auto-error check
+ * after every drupalGet/click, and a BigPipe no-JS cookie so lazy-built
+ * content (like flash messages) is actually present in the response.
+ */
 class JackotopiaTestBase extends ExistingSiteBase {
 
   use ConfigTrait;
@@ -89,6 +96,5 @@ class JackotopiaTestBase extends ExistingSiteBase {
     }
     $this->assertSession()->elementNotExists('css', '.messages--error, .alert-danger');
   }
-
 
 }

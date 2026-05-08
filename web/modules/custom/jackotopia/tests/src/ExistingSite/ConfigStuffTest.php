@@ -4,6 +4,9 @@ namespace Drupal\Tests\jackotopia\ExistingSite;
 
 use Drupal\Tests\jackotopia\Traits\ConfigTrait;
 
+/**
+ * Tiny config-only assertions — no HTTP, no nodes, just ImmutableConfig reads.
+ */
 class ConfigStuffTest extends JackotopiaTestBase {
 
   use ConfigTrait;

@@ -34,6 +34,7 @@ final class WeatherService {
    * Returns the current weather snapshot for a known zip code.
    *
    * @return array{temperature_f: float, weather_code: int, time: string}
+   *   Temperature in Fahrenheit, WMO weather code, and ISO 8601 timestamp.
    *
    * @throws \InvalidArgumentException
    *   If the zip code isn't in our hardcoded map.
