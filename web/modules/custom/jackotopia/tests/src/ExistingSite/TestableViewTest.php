@@ -10,7 +10,7 @@ class TestableViewTest extends JackotopiaTestBase {
   /**
    * Behavioural: render the view and check the row order in the page.
    */
-  public function testViewIsSortedByTitle() {
+  public function testViewIsSortedByTitle(): void {
     // Create three nodes whose creation order is the OPPOSITE of their
     // alphabetical order. If the view sorted by 'created' (newest first), the
     // page would show Alpha, Bravo, Charlie reversed — Charlie first.
@@ -33,9 +33,10 @@ class TestableViewTest extends JackotopiaTestBase {
   /**
    * Config-level: read the view config and assert its default sort.
    */
-  public function testViewConfigSortsByTitle() {
+  public function testViewConfigSortsByTitle(): void {
     $sorts = $this->getConfig('views.view.testable_view')
       ->get('display.default.display_options.sorts');
+    $this->assertIsArray($sorts);
 
     $this->assertSame(['title'], array_keys($sorts), 'Default display has exactly one sort, on title.');
     $this->assertConfigValue(

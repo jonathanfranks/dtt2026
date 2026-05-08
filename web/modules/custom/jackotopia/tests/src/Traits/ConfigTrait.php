@@ -15,9 +15,9 @@ trait ConfigTrait {
    * @return string|null
    *   The site name.
    */
-  protected function getSiteName() {
-    $config = \Drupal::configFactory()->get('system.site');
-    return $config->get('name');
+  protected function getSiteName(): ?string {
+    $name = \Drupal::configFactory()->get('system.site')->get('name');
+    return is_string($name) ? $name : NULL;
   }
 
   /**

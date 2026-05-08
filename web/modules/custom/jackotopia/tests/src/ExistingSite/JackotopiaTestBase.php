@@ -30,7 +30,7 @@ class JackotopiaTestBase extends ExistingSiteBase {
    * @param int $index
    *   (optional) The index number for cases where multiple links have the same
    *   text. Defaults to 0.
-   * @param array $texts
+   * @param string[] $texts
    *   Array of error message to check. Blank for defaults.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -40,15 +40,20 @@ class JackotopiaTestBase extends ExistingSiteBase {
     $label,
     int $index = 0,
     array $texts = [],
-  ) {
+  ): void {
     parent::clickLink($label, $index);
     $this->assertNoErrorMessage($texts);
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @param string $css_selector
+   *   CSS selector identifying the element to click.
+   * @param bool $allowErrors
+   *   When TRUE, skip the auto-error check after the click.
    */
-  public function click($css_selector, bool $allowErrors = FALSE) {
+  public function click($css_selector, bool $allowErrors = FALSE): void {
     parent::click($css_selector);
     if (!$allowErrors) {
       $this->assertNoErrorMessage();
@@ -57,8 +62,20 @@ class JackotopiaTestBase extends ExistingSiteBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param string|\Drupal\Core\Url $path
+   *   Drupal path or URL to load.
+   * @param array<string, mixed> $options
+   *   Options to forward to the URL generator.
+   * @param string[] $headers
+   *   Additional HTTP request headers.
+   * @param bool $allowErrors
+   *   When TRUE, skip the auto-error check after the request.
+   *
+   * @return string
+   *   The retrieved HTML.
    */
-  public function drupalGet($path, array $options = [], array $headers = [], bool $allowErrors = FALSE) {
+  public function drupalGet($path, array $options = [], array $headers = [], bool $allowErrors = FALSE): string {
     // Tell BigPipe to render lazy-builder placeholders inline (server-side)
     // instead of streaming them via <script type="application/vnd.drupal-ajax">
     // chunks that only execute under a real JS browser. Without this, content
@@ -75,7 +92,7 @@ class JackotopiaTestBase extends ExistingSiteBase {
   /**
    * Asserts that there are no error messages on the page.
    *
-   * @param array $texts
+   * @param string[] $texts
    *   Assert page does not contain texts in array values. Defaults to
    *   'The website encountered an unexpected error.', 'Notice:', and
    *   'Warning:'.
@@ -83,7 +100,7 @@ class JackotopiaTestBase extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function assertNoErrorMessage(array $texts = []) {
+  public function assertNoErrorMessage(array $texts = []): void {
     if (empty($texts)) {
       $texts = [
         'The website encountered an unexpected error.',

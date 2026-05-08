@@ -56,11 +56,20 @@ final class WeatherService {
     ]);
 
     $data = json_decode((string) $response->getBody(), TRUE, flags: JSON_THROW_ON_ERROR);
+    if (!is_array($data) || !isset($data['current']) || !is_array($data['current'])) {
+      throw new \RuntimeException('Unexpected Open-Meteo response shape.');
+    }
+    $temperature = $data['current']['temperature_2m'] ?? NULL;
+    $weatherCode = $data['current']['weather_code'] ?? NULL;
+    $time = $data['current']['time'] ?? NULL;
+    if (!is_numeric($temperature) || !is_numeric($weatherCode) || !is_string($time)) {
+      throw new \RuntimeException('Unexpected Open-Meteo response shape.');
+    }
 
     return [
-      'temperature_f' => (float) $data['current']['temperature_2m'],
-      'weather_code' => (int) $data['current']['weather_code'],
-      'time' => (string) $data['current']['time'],
+      'temperature_f' => (float) $temperature,
+      'weather_code' => (int) $weatherCode,
+      'time' => $time,
     ];
   }
 

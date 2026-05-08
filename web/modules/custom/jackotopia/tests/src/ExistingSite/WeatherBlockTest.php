@@ -22,7 +22,7 @@ class WeatherBlockTest extends JackotopiaTestBase {
   /**
    * Block plugin crawler — render the block in isolation, with config.
    */
-  public function testBlockRendersForConfiguredZip() {
+  public function testBlockRendersForConfiguredZip(): void {
     $crawler = $this->getBlockPluginCrawler('jackotopia_weather', ['zip_code' => '60614']);
 
     $this->assertSame('60614', $crawler->filter('.jackotopia-weather')->attr('data-zip'));
@@ -35,7 +35,7 @@ class WeatherBlockTest extends JackotopiaTestBase {
   /**
    * Block plugin crawler against a different zip — proves config drives output.
    */
-  public function testBlockRendersForDifferentZip() {
+  public function testBlockRendersForDifferentZip(): void {
     $crawler = $this->getBlockPluginCrawler('jackotopia_weather', ['zip_code' => '44718']);
 
     $this->assertSame('44718', $crawler->filter('.jackotopia-weather')->attr('data-zip'));
@@ -45,7 +45,7 @@ class WeatherBlockTest extends JackotopiaTestBase {
   /**
    * Both placed blocks render on a real page in the sidebar.
    */
-  public function testBothPlacedBlocksAppearInSidebar() {
+  public function testBothPlacedBlocksAppearInSidebar(): void {
     // Front page renders the Olivero front-end theme with the sidebar region.
     $this->drupalGet('/');
 
@@ -57,14 +57,19 @@ class WeatherBlockTest extends JackotopiaTestBase {
     $this->assertNotNull($chicago, 'The 60614 block placement is on the page.');
     $this->assertNotNull($canton, 'The 44718 block placement is on the page.');
 
+    $chicagoTemp = $chicago->find('css', '.jackotopia-weather__temp');
+    $cantonTemp = $canton->find('css', '.jackotopia-weather__temp');
+    $this->assertNotNull($chicagoTemp);
+    $this->assertNotNull($cantonTemp);
+
     // Each placement renders the temp wired to its own zip.
     $this->assertMatchesRegularExpression(
       '/^60614: -?\d+(\.\d+)? °F$/',
-      trim($chicago->find('css', '.jackotopia-weather__temp')->getText()),
+      trim($chicagoTemp->getText()),
     );
     $this->assertMatchesRegularExpression(
       '/^44718: -?\d+(\.\d+)? °F$/',
-      trim($canton->find('css', '.jackotopia-weather__temp')->getText()),
+      trim($cantonTemp->getText()),
     );
   }
 

@@ -13,10 +13,14 @@ trait DebugTrait {
    * When you want to pause a test, use this trait and pauseForUserInput() to
    * halt execution of the test without pausing the site.
    */
-  protected function pauseForUserInput() {
+  protected function pauseForUserInput(): void {
     fwrite(STDOUT, "\033[s \033[93m[Breakpoint] Press \033[1;93m[RETURN]\033[0;93m to continue, or 'q' to quit...\033[0m");
     do {
-      $line = trim(fgets(STDIN, 1024));
+      $input = fgets(STDIN, 1024);
+      if ($input === FALSE) {
+        throw new \RuntimeException('Could not read from STDIN while paused.');
+      }
+      $line = trim($input);
       // Note: this assumes ASCII encoding.  Should probably be revamped to
       // handle other character sets.
       $charCode = ord($line);

@@ -14,7 +14,7 @@ class ConfigStuffTest extends JackotopiaTestBase {
   /**
    * Tests the site name.
    */
-  public function testSiteName() {
+  public function testSiteName(): void {
     $expected = 'Drush Site-Install';
     $actual = $this->getSiteName();
     $this->assertEquals($expected, $actual);
@@ -23,14 +23,14 @@ class ConfigStuffTest extends JackotopiaTestBase {
   /**
    * Visitor registration is locked down to admin-only.
    */
-  public function testVisitorRegistrationIsAdminOnly() {
+  public function testVisitorRegistrationIsAdminOnly(): void {
     $this->assertConfigValue('user.settings', 'register', 'admin_only');
   }
 
   /**
    * The default front-end theme is Olivero.
    */
-  public function testDefaultThemeIsOlivero() {
+  public function testDefaultThemeIsOlivero(): void {
     $this->assertConfigValue('system.theme', 'default', 'olivero');
   }
 

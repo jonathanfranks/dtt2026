@@ -13,6 +13,9 @@ final class JackotopiaController extends ControllerBase {
 
   /**
    * Builds the response for the error message route.
+   *
+   * @return array<string, mixed>
+   *   A render array.
    */
   public function errorMessagePage(): array {
 

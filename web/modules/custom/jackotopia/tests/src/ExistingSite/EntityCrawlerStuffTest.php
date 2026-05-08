@@ -18,7 +18,7 @@ class EntityCrawlerStuffTest extends JackotopiaTestBase {
   /**
    * The teaser view mode trims the body; the default view mode doesn't.
    */
-  public function testArticleTeaserTrimsTheBody() {
+  public function testArticleTeaserTrimsTheBody(): void {
     // Article's teaser view mode uses 'text_summary_or_trimmed' at 600 chars.
     // We want a body where a unique token sits past that boundary, so the
     // trim is observable: full view contains it, teaser view does not.
@@ -48,12 +48,13 @@ class EntityCrawlerStuffTest extends JackotopiaTestBase {
   /**
    * The 'powered_by' block plugin renders a Drupal-promoting blurb.
    */
-  public function testPoweredByBlockPlugin() {
+  public function testPoweredByBlockPlugin(): void {
     $crawler = $this->getBlockPluginCrawler('system_powered_by_block');
 
     $this->assertStringContainsString('Powered by', $crawler->text());
-    $link = $crawler->filter('a')->first();
-    $this->assertStringContainsString('drupal.org', $link->attr('href'));
+    $href = $crawler->filter('a')->first()->attr('href');
+    $this->assertNotNull($href);
+    $this->assertStringContainsString('drupal.org', $href);
   }
 
 }

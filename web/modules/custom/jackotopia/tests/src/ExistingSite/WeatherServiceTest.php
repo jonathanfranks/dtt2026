@@ -18,7 +18,7 @@ class WeatherServiceTest extends JackotopiaTestBase {
   /**
    * Make sure our service is registered.
    */
-  public function testServiceIsRegisteredOnTheContainer() {
+  public function testServiceIsRegisteredOnTheContainer(): void {
     $service = \Drupal::service('jackotopia.weather');
     $this->assertInstanceOf(WeatherService::class, $service);
   }
@@ -28,7 +28,7 @@ class WeatherServiceTest extends JackotopiaTestBase {
    *
    * @throws \JsonException
    */
-  public function testGetCurrentConditionsReturnsSomething() {
+  public function testGetCurrentConditionsReturnsSomething(): void {
     /** @var \Drupal\jackotopia\Weather\WeatherService $weather */
     $weather = \Drupal::service('jackotopia.weather');
     $conditions = $weather->getCurrentConditionsForZip('60614');

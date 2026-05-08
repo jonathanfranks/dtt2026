@@ -12,8 +12,9 @@ class CoreStuffTest extends JackotopiaTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testUserLogin() {
+  public function testUserLogin(): void {
     $user = $this->createUser();
+    $this->assertNotFalse($user);
     $this->drupalLogin($user);
   }
 
@@ -24,8 +25,9 @@ class CoreStuffTest extends JackotopiaTestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testErrorPage() {
+  public function testErrorPage(): void {
     $user = $this->createUser();
+    $this->assertNotFalse($user);
     $this->drupalLogin($user);
     $this->drupalGet('/jackotopia/error-message', allowErrors: TRUE);
 
@@ -45,8 +47,9 @@ class CoreStuffTest extends JackotopiaTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testErrorAssertionsFail() {
+  public function testErrorAssertionsFail(): void {
     $user = $this->createUser();
+    $this->assertNotFalse($user);
     $this->drupalLogin($user);
     $this->drupalGet('/jackotopia/error-message');
   }
