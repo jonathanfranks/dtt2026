@@ -2,11 +2,13 @@
 
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
+use Drupal\Tests\jackotopia\Traits\ConfigTrait;
 use Drupal\Tests\jackotopia\Traits\DebugTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 class JackotopiaTestBase extends ExistingSiteBase {
 
+  use ConfigTrait;
   use DebugTrait;
 
   /**
