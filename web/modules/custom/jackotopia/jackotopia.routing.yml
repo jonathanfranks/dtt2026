@@ -1,0 +1,7 @@
+jackotopia.error_message:
+  path: '/jackotopia/error-message'
+  defaults:
+    _title: 'Error Message'
+    _controller: '\Drupal\jackotopia\Controller\JackotopiaController::errorMessagePage'
+  requirements:
+    _permission: 'access content'
