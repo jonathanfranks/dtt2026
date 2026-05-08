@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+## Description: Install Drupal from the repo's exported config (config/sync).
+## Usage: install
+## Example: "ddev install"
+
+set -euo pipefail
+
+# A fresh clone has no vendor/ — pull dependencies before anything else
+# tries to invoke drush. Idempotent on subsequent runs.
+composer install
+
+# Standard profile has a hook_install(), which Drupal won't run under
+# --existing-config. So we do this in two steps: install fresh from the
+# profile, then realign uuid + import the rest of config/sync on top.
+drush site:install \
+  --account-name=admin \
+  --account-pass=admin \
+  --yes \
+  standard
+
+# Match the site uuid in active config to what's in config/sync, otherwise
+# config:import will refuse to apply config from "a different site".
+SYNC_UUID=$(grep '^uuid:' config/sync/system.site.yml | awk '{print $2}')
+drush config:set system.site uuid "${SYNC_UUID}" --yes
+
+# Standard's hook_install() seeds shortcut links the synced config doesn't
+# track (they're content entities, not config). Delete them so the import
+# can rebuild shortcut.set.default with the synced uuid.
+drush php:eval '
+  $s = \Drupal::entityTypeManager()->getStorage("shortcut");
+  $s->delete($s->loadMultiple());
+'
+
+drush config:import --yes
+drush cache:rebuild
+
+echo
+echo "Site installed. Log in with admin / admin, or:"
+drush user:login
