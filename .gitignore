@@ -52,6 +52,7 @@
 
 # Ignore Office temp files
 *.docx#
+~$*
 
 # Ignore the saml symlink.
 web/simplesaml
