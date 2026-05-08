@@ -31,7 +31,7 @@ class WeatherServiceTest extends JackotopiaTestBase {
   public function testGetCurrentConditionsReturnsSomething() {
     /** @var \Drupal\jackotopia\Weather\WeatherService $weather */
     $weather = \Drupal::service('jackotopia.weather');
-    $conditions = $weather->getCurrentConditions();
+    $conditions = $weather->getCurrentConditionsForZip('60614');
 
     $this->assertSame(
       ['temperature_f', 'weather_code', 'time'],

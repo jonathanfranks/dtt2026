@@ -7,37 +7,47 @@ namespace Drupal\jackotopia\Weather;
 use GuzzleHttp\ClientInterface;
 
 /**
- * Pulls the current weather for the Drupal Camp venue (Chicago, 60614).
+ * Pulls current weather for a zip code, via Open-Meteo (no API key needed).
  *
- * Backed by Open-Meteo (no API key required). The API endpoint is hardcoded
- * to the camp venue's lat/lon on purpose: we want the service surface to be
- * tiny and obvious so the test stays focused on testing a *service*, not on
- * geocoding or configuration plumbing.
+ * The "zip → lat/lon" map is intentionally a tiny hardcoded array. This is a
+ * teaching artifact, not a geocoder. Add zips here as the talk demands them.
  */
 final class WeatherService {
 
-  /**
-   * Lincoln Park, Chicago — DePaul / Drupal Camp venue area (zip 60614).
-   */
-  private const LATITUDE = 41.9249;
-  private const LONGITUDE = -87.6532;
-
   private const ENDPOINT = 'https://api.open-meteo.com/v1/forecast';
+
+  /**
+   * Known zip codes to (latitude, longitude) pairs.
+   */
+  private const COORDINATES = [
+    // Lincoln Park, Chicago — Drupal Camp venue area.
+    '60614' => [41.9249, -87.6532],
+    // Jackson Township / Canton, OH.
+    '44718' => [40.8569, -81.4229],
+  ];
 
   public function __construct(
     private readonly ClientInterface $httpClient,
   ) {}
 
   /**
-   * Returns the current weather snapshot for the venue.
+   * Returns the current weather snapshot for a known zip code.
    *
    * @return array{temperature_f: float, weather_code: int, time: string}
+   *
+   * @throws \InvalidArgumentException
+   *   If the zip code isn't in our hardcoded map.
    */
-  public function getCurrentConditions(): array {
+  public function getCurrentConditionsForZip(string $zip): array {
+    if (!isset(self::COORDINATES[$zip])) {
+      throw new \InvalidArgumentException(sprintf('Unknown zip code: %s', $zip));
+    }
+    [$latitude, $longitude] = self::COORDINATES[$zip];
+
     $response = $this->httpClient->request('GET', self::ENDPOINT, [
       'query' => [
-        'latitude' => self::LATITUDE,
-        'longitude' => self::LONGITUDE,
+        'latitude' => $latitude,
+        'longitude' => $longitude,
         'current' => 'temperature_2m,weather_code',
         'temperature_unit' => 'fahrenheit',
       ],

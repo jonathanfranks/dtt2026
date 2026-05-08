@@ -1,0 +1,21 @@
+uuid: 32e3e481-1b1c-4a48-a872-02df2dc1fcc1
+langcode: en
+status: true
+dependencies:
+  module:
+    - jackotopia
+  theme:
+    - olivero
+id: olivero_weather_60614
+theme: olivero
+region: sidebar
+weight: -10
+provider: null
+plugin: jackotopia_weather
+settings:
+  id: jackotopia_weather
+  label: 'Weather: 60614'
+  label_display: visible
+  provider: jackotopia
+  zip_code: '60614'
+visibility: {  }

@@ -1,0 +1,21 @@
+uuid: 130e21fd-f5c1-406f-a86d-486e58c24b7e
+langcode: en
+status: true
+dependencies:
+  module:
+    - jackotopia
+  theme:
+    - olivero
+id: olivero_weather_44718
+theme: olivero
+region: sidebar
+weight: -9
+provider: null
+plugin: jackotopia_weather
+settings:
+  id: jackotopia_weather
+  label: 'Weather: 44718'
+  label_display: visible
+  provider: jackotopia
+  zip_code: '44718'
+visibility: {  }
