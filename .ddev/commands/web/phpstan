@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+## Description: Run project's phpstan inspections.
+## Usage: phpstan
+## Example: "ddev phpstan"
+
+./vendor/bin/phpstan analyse $@
