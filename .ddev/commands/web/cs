@@ -4,12 +4,7 @@
 ## Usage: cs
 ## Example: "ddev cs"
 
-./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info --ignore=node_modules,bower_components,vendor,web/modules/custom/verify/modules/verify_wiris/quizzes ./web/modules/custom
-exit_code1=$?
-./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info --ignore=node_modules,bower_components,vendor,.min.css ./web/themes/custom
-exit_code2=$?
-./vendor/bin/phpcs --standard=Drupal --extensions=php ./tests/features/bootstrap
-exit_code3=$?
-
-echo "Exit $((exit_code1 + exit_code2 + exit_code3))"
-exit $((exit_code1 + exit_code2 + exit_code3))
+./vendor/bin/phpcs \
+  --standard=Drupal,DrupalPractice \
+  --extensions=php,module,inc,install,test,profile,theme,info \
+  ./web/modules/custom

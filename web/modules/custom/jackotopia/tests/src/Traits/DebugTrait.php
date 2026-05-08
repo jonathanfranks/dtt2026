@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\Traits;
 
 /**
@@ -25,19 +27,17 @@ trait DebugTrait {
       // handle other character sets.
       $charCode = ord($line);
       switch ($charCode) {
-        // CR.
+        // Empty line (Return only — trim() drops the \n, ord('') is 0).
         case 0:
-          // Y.
+          // Lowercase 'y'.
         case 121:
-          // Y.
+          // Uppercase 'Y'.
         case 89:
           break 2;
 
-        // Case 78: //N
-        // case 110: //n.
-        // q.
+        // Lowercase 'q'.
         case 113:
-          // Q.
+          // Uppercase 'Q'.
         case 81:
           throw new \Exception("Exiting test intentionally.");
 

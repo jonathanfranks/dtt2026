@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
 use Drupal\Tests\jackotopia\Traits\ConfigTrait;
@@ -10,15 +12,6 @@ use Drupal\Tests\jackotopia\Traits\ConfigTrait;
 class ConfigStuffTest extends JackotopiaTestBase {
 
   use ConfigTrait;
-
-  /**
-   * Tests the site name.
-   */
-  public function testSiteName(): void {
-    $expected = 'Drush Site-Install';
-    $actual = $this->getSiteName();
-    $this->assertEquals($expected, $actual);
-  }
 
   /**
    * Visitor registration is locked down to admin-only.

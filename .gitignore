@@ -47,7 +47,7 @@
 !/db/*.tar.gz
 *.zip
 
-# Ignore the keys diretory. This is used for secret files and differs by environment.
+# Ignore the keys directory. This is used for secret files and differs by environment.
 /keys
 
 # Ignore Office temp files

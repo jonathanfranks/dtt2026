@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\Traits;
 
 use Drupal\Core\Config\ImmutableConfig;
@@ -8,17 +10,6 @@ use Drupal\Core\Config\ImmutableConfig;
  * Wraps some config into assertions into a trait for testing.
  */
 trait ConfigTrait {
-
-  /**
-   * Get the site name.
-   *
-   * @return string|null
-   *   The site name.
-   */
-  protected function getSiteName(): ?string {
-    $name = \Drupal::configFactory()->get('system.site')->get('name');
-    return is_string($name) ? $name : NULL;
-  }
 
   /**
    * Read a config object.

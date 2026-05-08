@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
 /**
@@ -29,7 +31,7 @@ class CoreStuffTest extends JackotopiaTestBase {
     $user = $this->createUser();
     $this->assertNotFalse($user);
     $this->drupalLogin($user);
-    $this->drupalGet('/jackotopia/error-message', allowErrors: TRUE);
+    $this->drupalGet('/jackotopia/error-message', allow_errors: TRUE);
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('It works!');

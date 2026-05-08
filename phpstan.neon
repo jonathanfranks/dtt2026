@@ -2,3 +2,10 @@ parameters:
     level: 9
     paths:
         - web/modules/custom
+
+    # When a method's PHPDoc type is documented as `float`, an `assertIsFloat()`
+    # call against a value of that type would otherwise be flagged as
+    # "always evaluates to true." For tests, runtime type assertions ARE the
+    # point — keep them, and tell PHPStan to treat docblock types as
+    # documentation rather than as certainties.
+    treatPhpDocTypesAsCertain: false

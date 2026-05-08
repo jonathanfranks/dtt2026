@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\Traits;
 
 use Drupal\Core\Entity\EntityPublishedInterface;

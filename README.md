@@ -47,8 +47,8 @@ ddev phpunit --testdox
 
 ## One test is supposed to fail
 
-When you run the suite locally, `CoreStuffTest::testErrorAssertionsFail` will fail. **That's on purpose.** It's the demo for the auto-error guardrail in `JackotopiaTestBase`: every `drupalGet()` and `click()` quietly checks the resulting page for `.messages--error`, `.alert-danger`, and the usual "unexpected error / Notice / Warning" texts. The test visits a route that deliberately pushes an error message, the guardrail spots `.messages--error`, and the test fails on the *page load* — before the test author even has to write an assertion about errors. That's the point: you get a free safety net under every test that uses the base class.
+When you run the suite locally, `CoreStuffTest::testErrorAssertionsFail` will fail. **That's on purpose.** It's the demo for the auto-error guardrail in `JackotopiaTestBase`: every `drupalGet()` and `click()` quietly checks the resulting page for `.messages--error`, `.alert-danger`, and the usual "unexpected error / Notice / Warning" texts. The test visits a route that deliberately pushes an error message, Drupal renders it inside `.messages--error`, the guardrail spots that selector, and the test fails on the *page load* — before the test author even has to write an assertion about errors. That's the point: you get a free safety net under every test that uses the base class.
 
-Comment out the route's `messenger()->addError(…)` call in `JackotopiaController` and watch it go green to confirm the mechanism.
+Comment out the `messenger()->addError(…)` call in `JackotopiaController` (which is what makes Drupal render the `.messages--error` element) and watch the test go green to confirm the mechanism.
 
 CI excludes this test (it's tagged `@group intentionally_failing`) so the build badge stays green. If you want to see CI fail too, drop the `--exclude-group` flag in `.github/workflows/ci.yml`.

@@ -117,26 +117,40 @@ final class WeatherBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   public function build(): array {
     $zip = $this->configuration['zip_code'];
-    $conditions = $this->weather->getCurrentConditionsForZip($zip);
 
-    return [
+    $build = [
       '#type' => 'container',
       '#attributes' => [
         'class' => ['jackotopia-weather'],
         'data-zip' => $zip,
       ],
-      'temperature' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#attributes' => ['class' => ['jackotopia-weather__temp']],
-        '#value' => $this->t('@zip: @temp °F', [
-          '@zip' => $zip,
-          '@temp' => $conditions['temperature_f'],
-        ]),
-      ],
       // Live API call — never cache the rendered output.
       '#cache' => ['max-age' => 0],
     ];
+
+    try {
+      $conditions = $this->weather->getCurrentConditionsForZip($zip);
+    }
+    catch (\InvalidArgumentException) {
+      $build['temperature'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['jackotopia-weather__temp']],
+        '#value' => $this->t('@zip: no data for this zip', ['@zip' => $zip]),
+      ];
+      return $build;
+    }
+
+    $build['temperature'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => ['jackotopia-weather__temp']],
+      '#value' => $this->t('@zip: @temp °F', [
+        '@zip' => $zip,
+        '@temp' => $conditions['temperature_f'],
+      ]),
+    ];
+    return $build;
   }
 
 }

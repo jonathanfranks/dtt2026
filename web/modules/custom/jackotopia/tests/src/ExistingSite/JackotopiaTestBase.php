@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
 use Drupal\Tests\jackotopia\Traits\ConfigTrait;
@@ -50,12 +52,12 @@ class JackotopiaTestBase extends ExistingSiteBase {
    *
    * @param string $css_selector
    *   CSS selector identifying the element to click.
-   * @param bool $allowErrors
+   * @param bool $allow_errors
    *   When TRUE, skip the auto-error check after the click.
    */
-  public function click($css_selector, bool $allowErrors = FALSE): void {
+  public function click($css_selector, bool $allow_errors = FALSE): void {
     parent::click($css_selector);
-    if (!$allowErrors) {
+    if (!$allow_errors) {
       $this->assertNoErrorMessage();
     }
   }
@@ -69,13 +71,13 @@ class JackotopiaTestBase extends ExistingSiteBase {
    *   Options to forward to the URL generator.
    * @param string[] $headers
    *   Additional HTTP request headers.
-   * @param bool $allowErrors
+   * @param bool $allow_errors
    *   When TRUE, skip the auto-error check after the request.
    *
    * @return string
    *   The retrieved HTML.
    */
-  public function drupalGet($path, array $options = [], array $headers = [], bool $allowErrors = FALSE): string {
+  public function drupalGet($path, array $options = [], array $headers = [], bool $allow_errors = FALSE): string {
     // Tell BigPipe to render lazy-builder placeholders inline (server-side)
     // instead of streaming them via <script type="application/vnd.drupal-ajax">
     // chunks that only execute under a real JS browser. Without this, content
@@ -83,7 +85,7 @@ class JackotopiaTestBase extends ExistingSiteBase {
     $this->getSession()->setCookie('big_pipe_nojs', '1');
 
     $return = parent::drupalGet($path, $options, $headers);
-    if (!$allowErrors) {
+    if (!$allow_errors) {
       $this->assertNoErrorMessage();
     }
     return $return;
