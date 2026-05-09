@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  tests:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup DDEV
+        uses: ddev/github-action-setup-ddev@v1
+
+      - name: Start DDEV
+        run: ddev start
+
+      - name: Install Drupal from config/sync
+        run: ddev install
+
+      # CoreStuffTest::testErrorAssertions is tagged @group intentionally_failing
+      # because it exists to demonstrate the auto-error guardrail in
+      # JackotopiaTestBase by tripping it on purpose. Excluding it from CI
+      # keeps the badge green while the demo still works locally.
+      - name: Run PHPUnit
+        run: ddev phpunit --exclude-group intentionally_failing
+
+  quality:
+    name: Code style and static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup DDEV
+        uses: ddev/github-action-setup-ddev@v1
+
+      # No site install needed — these are static-analysis only.
+      - name: Composer install
+        run: |
+          ddev start
+          ddev composer install --no-interaction
+
+      - name: PHPCS
+        run: ddev cs
+
+      - name: PHPStan
+        run: ddev phpstan
