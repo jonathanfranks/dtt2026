@@ -52,3 +52,22 @@ When you run the suite locally, `CoreStuffTest::testErrorAssertionsFail` will fa
 Comment out the `messenger()->addError(…)` call in `JackotopiaController` (which is what makes Drupal render the `.messages--error` element) and watch the test go green to confirm the mechanism.
 
 CI excludes this test (it's tagged `@group intentionally_failing`) so the build badge stays green. If you want to see CI fail too, drop the `--exclude-group` flag in `.github/workflows/ci.yml`.
+
+## A note on xdebug
+
+Turning xdebug on (`ddev xdebug on`) can expose a Drupal destructor-ordering bug that bites DTT in two places:
+
+1. **A teardown fatal**, along the lines of:
+
+   > `StatementWrapperIterator::__construct(): Argument #2 ($clientConnection) must be of type object, null given`
+
+   Entity deletions queue cache-tag invalidations as post-transaction callbacks that fire from `Transaction::__destruct()`. With xdebug holding extra refs, the `Connection`'s PDO can be torn down before the `Transaction` is, so the callback runs against a dead connection.
+
+2. **Mid-test stale-cache failures.** ExistingSite tests run in the PHPUnit process but make HTTP requests through Mink to nginx/php-fpm — a *different* DB connection. Cache-tag invalidations from entity writes (`$node->save()`, etc.) are queued as post-transaction callbacks that only fire when the root `Transaction` is destructed. With xdebug holding extra refs, that destruction is delayed, so the invalidations never reach `{cachetags}` before the HTTP request runs — and the web server happily serves a stale render-cache hit that doesn't reflect what you just changed. Symptom: the DB has the right rows, but the page shows the old ones.
+
+`JackotopiaTestBase` works around both by calling, at teardown and immediately before every `drupalGet()` / `click()`:
+
+- `\Drupal::database()->commitAll()` — a Drupal core workaround method for the destructor-ordering bug, and
+- `\Drupal::service('cache_tags.invalidator.checksum')->rootTransactionEndCallback(TRUE)` — to force queued cache-tag invalidations to be written out, since `commitAll()` doesn't process post-transaction callbacks.
+
+If you write a test base of your own, do the same.
