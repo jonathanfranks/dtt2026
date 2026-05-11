@@ -55,8 +55,13 @@ class JackotopiaTestBase extends ExistingSiteBase {
    */
   protected function commitPendingTransactions(): void {
     \Drupal::database()->commitAll();
-    \Drupal::service('cache_tags.invalidator.checksum')
-      ->rootTransactionEndCallback(TRUE);
+    // rootTransactionEndCallback() is not on any public interface — it lives
+    // on CacheTagsChecksumTrait — so the service may technically be a
+    // decorator that doesn't expose it. Guard with method_exists().
+    $checksum = \Drupal::service('cache_tags.invalidator.checksum');
+    if (method_exists($checksum, 'rootTransactionEndCallback')) {
+      $checksum->rootTransactionEndCallback(TRUE);
+    }
   }
 
   /**
