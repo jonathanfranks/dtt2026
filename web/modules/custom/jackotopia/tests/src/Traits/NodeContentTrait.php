@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\jackotopia\Traits;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 
 /**
@@ -70,6 +71,33 @@ trait NodeContentTrait {
         $node->save();
       }
     }
+  }
+
+  /**
+   * Reloads a fresh copy of the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to reload.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The reloaded entity.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function reloadEntity(EntityInterface $entity): EntityInterface {
+    $id = $entity->id();
+    if ($id === NULL) {
+      throw new \LogicException('Cannot reload an entity with no ID.');
+    }
+    $entityType = $entity->getEntityTypeId();
+    $entityStorage = \Drupal::entityTypeManager()->getStorage($entityType);
+    $entityStorage->resetCache([$id]);
+    $reloaded = $entityStorage->load($id);
+    if ($reloaded === NULL) {
+      throw new \RuntimeException(sprintf('Entity %s:%s no longer exists.', $entityType, $id));
+    }
+    return $reloaded;
   }
 
 }

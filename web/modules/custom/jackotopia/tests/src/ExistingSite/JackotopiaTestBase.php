@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\jackotopia\ExistingSite;
 
+use Drupal\Tests\jackotopia\Traits\AdvancedUiTestTrait;
 use Drupal\Tests\jackotopia\Traits\ConfigTrait;
 use Drupal\Tests\jackotopia\Traits\DebugTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
@@ -17,6 +18,7 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  */
 class JackotopiaTestBase extends ExistingSiteBase {
 
+  use AdvancedUiTestTrait;
   use ConfigTrait;
   use DebugTrait;
 

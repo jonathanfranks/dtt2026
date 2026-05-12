@@ -36,6 +36,8 @@ class CoreStuffTest extends JackotopiaTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('It works!');
     $this->assertSession()->pageTextContains('Uh oh, this looks like an error.');
+
+    $this->assertPageTitle('Error Message');
   }
 
   /**
